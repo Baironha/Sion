@@ -9,6 +9,24 @@ class productos_Serializer(serializers.ModelSerializer):
         model  = productos # Archivos exportados
         fields = '__all__' #All se refiere a todas las columnas del DB
 
+class disponibilidad_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = disponibilidad
+        fields = '__all__'
+
+
+class estado_producto_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = estado_producto
+        fields = '__all__'
+
+
+
+class stock_productos_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = stock_productos
+        fields = '__all__'
+
 
 class rol_administradores_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -49,13 +67,6 @@ class ventas_Serializer(serializers.ModelSerializer):
     class Meta:
         model  = ventas # Archivos exportados
         fields = '__all__' #All se refiere a todas las columnas del DB
-
-
-class usuarios_x_ventas_Serializer(serializers.ModelSerializer):
-    class Meta:
-        model  = usuarios_x_ventas # Archivos exportados
-        fields = '__all__' #All se refiere a todas las columnas del DB
-
 
 
 class productos_x_ventas_Serializer(serializers.ModelSerializer):

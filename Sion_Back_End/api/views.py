@@ -29,6 +29,54 @@ class productos_DetailView(RetrieveUpdateDestroyAPIView):
     serializer_class   = productos_Serializer
 
 
+class disponibilidad_ListApiView(ListAPIView):
+    permission_classes = [AllowAny]
+    queryset           = stock_productos.objects.all()
+    serializer_class   = stock_productos_Serializer
+
+
+class disponibilidad_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated,IsEmpledoUserGroup]
+    queryset           = disponibilidad.objects.all()
+    serializer_class   = disponibilidad_Serializer
+
+
+class disponibilidad_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = disponibilidad.objects.all()
+    serializer_class   = disponibilidad_Serializer
+
+
+class estado_producto_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated,IsEmpledoUserGroup]
+    queryset           = estado_producto.objects.all()
+    serializer_class   = estado_producto_Serializer
+
+
+class estado_producto_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUserGroup]
+    queryset           = estado_producto.objects.all()
+    serializer_class   = estado_producto_Serializer
+
+
+class stock_productos_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated,IsEmpledoUserGroup]
+    queryset           = stock_productos.objects.all()
+    serializer_class   = stock_productos_Serializer
+
+
+class stock_productos_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = stock_productos.objects.all()
+    serializer_class   = stock_productos_Serializer
+
+
+class usuarios_ListCreateView(ListCreateAPIView):
+    permission_classes = [AllowAny]
+    queryset           = usuarios.objects.all()
+    serializer_class   = usuarios_Serializer
+
+
 class usuarios_CreateAPIView(CreateAPIView):
     permission_classes = [AllowAny]
     queryset           = usuarios.objects.all()
@@ -113,17 +161,6 @@ class ventas_DetailView(RetrieveUpdateDestroyAPIView):
 
 
 #Serializer intermedias
-
-
-class usuarios_x_ventas_ListCreateView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
-    queryset           = usuarios_x_ventas.objects.all()
-    serializer_class   = usuarios_x_ventas_Serializer
-
-class usuarios_x_ventas_DetailView(RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsEmpledoUserGroup, IsAuthenticated]
-    queryset           = usuarios_x_ventas.objects.all()
-    serializer_class   = usuarios_x_ventas_Serializer
 
 
 class productos_x_ventas_ListCreateView(ListCreateAPIView):
