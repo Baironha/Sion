@@ -10,6 +10,17 @@ from .serializer import *
 # Create your views here.
 
 
+class proveedor_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated,IsAdminUserGroup]
+    queryset           = proveedor.objects.all()
+    serializer_class   = proveedor_Serializer
+
+
+class proveedor_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated,IsAdminUserGroup]
+    queryset           = proveedor.objects.all()
+    serializer_class   = proveedor_Serializer
+
 
 class productos_ListApiView(ListAPIView):
     permission_classes = [AllowAny]
@@ -148,6 +159,66 @@ class metodo_de_pago_DetailView(RetrieveUpdateDestroyAPIView):
     serializer_class   = metodo_de_pago_Serializer
 
 
+class montoenvio_ListApiView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset           = montoenvio.objects.all()
+    serializer_class   = montoenvio_Serializer
+
+
+class montoenvio_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = montoenvio.objects.all()
+    serializer_class   = montoenvio_Serializer
+
+
+class montoenvio_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated,IsAdminUserGroup]
+    queryset           = montoenvio.objects.all()
+    serializer_class   = montoenvio_Serializer
+
+
+class Descuento_ListApiView(ListAPIView):
+    permission_classes = [AllowAny]
+    queryset           = Descuento.objects.all()
+    serializer_class   = Descuento_Serializer
+
+
+class Descuento_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = Descuento.objects.all()
+    serializer_class   = Descuento_Serializer
+
+
+class Descuento_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = Descuento.objects.all()
+    serializer_class   = Descuento_Serializer
+
+
+class carrito_ListCreateView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset           = carrito.objects.all()
+    serializer_class   = carrito_Serializer
+
+
+class carrito_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = carrito.objects.all()
+    serializer_class   = carrito_Serializer
+
+
+class carritoItem_ListCreateView(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    queryset           = carrito.objects.all()
+    serializer_class   = carrito_Serializer
+
+
+class carritoItem_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, IsEmpledoUserGroup]
+    queryset           = carritoItem.objects.all()
+    serializer_class   = carritoItem_Serializer
+
+
 class ventas_ListCreateView(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset           = ventas.objects.all()
@@ -163,8 +234,20 @@ class ventas_DetailView(RetrieveUpdateDestroyAPIView):
 #Serializer intermedias
 
 
+class ProveedoresXProducto_ListCreateView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUserGroup]
+    queryset           = productos_x_ventas.objects.all()
+    serializer_class   = productos_x_ventas_Serializer
+
+
+class ProveedoresXProducto_DetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminUserGroup, IsAuthenticated]
+    queryset           = ProveedoresXProducto.objects.all()
+    serializer_class   = ProveedoresXProducto_Serializer
+
+
 class productos_x_ventas_ListCreateView(ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsEmpledoUserGroup]
     queryset           = productos_x_ventas.objects.all()
     serializer_class   = productos_x_ventas_Serializer
 

@@ -3,7 +3,10 @@ from .views import *
 
 
 urlpatterns =[
-
+    path('proveedor/', proveedor_ListCreateView.as_view(), name= 'proveedor_crear_ver'),
+    path('proveedor/<int:pk>/', proveedor_DetailView.as_view(), name= 'proveedor_actualizar_eliminar'),
+    
+    
     path('productos/ver/', productos_ListApiView.as_view(), name= 'productos_ver'),
     path('productos/crear/', productos_ListCreateView.as_view(), name= 'productos_crear_ver'),
     path('productos/<int:pk>/', productos_DetailView.as_view(), name= 'productos_actualizar_eliminar'),
@@ -49,11 +52,34 @@ urlpatterns =[
     path('rol_empleados/', rol_empleados_ListCreateView.as_view(), name= 'rol_empleados_crear'),
     path('rol_empleados/<int:pk>/', rol_empleados_DetailView.as_view(), name= 'rol_empleados_actualizar_eliminar'),
     
+    
+    path('montoenvio/ver/', montoenvio_ListApiView.as_view(), name= 'montoenvio_ver'),
+    path('montoenvio/crear/', montoenvio_ListCreateView.as_view(), name= 'montoenvio_crear_ver'),
+    path('montoenvio/<int:pk>/', montoenvio_DetailView.as_view(), name= 'montoenvio_actualizar_eliminar'),
+    
+    
+    path(' Descuento/ver/', Descuento_ListApiView.as_view(), name= ' Descuento_ver'),
+    path(' Descuento/crear/', Descuento_ListCreateView.as_view(), name= ' Descuento_crear_ver'),
+    path(' Descuento/<int:pk>/', Descuento_DetailView.as_view(), name= ' Descuento_actualizar_eliminar'),
+    
+    
+    path('carrito/', carrito_ListCreateView.as_view(), name= 'carrito_crear'),
+    path('carrito/<int:pk>/', carrito_DetailView.as_view(), name= 'carrito_actualizar_eliminar'),
+    
+    
+    path('carritoItem/', carritoItem_ListCreateView.as_view(), name= 'carritoItem_crear'),
+    path('carritoItem/<int:pk>/', carritoItem_DetailView.as_view(), name= 'carritoItem_actualizar_eliminar'),
+    
+    
     path('ventas/', ventas_ListCreateView.as_view(), name= 'ventas_crear'),
     path('ventas/<int:pk>/', ventas_DetailView.as_view(), name= 'ventas_actualizar_eliminar'),
     
     
     #urls intermediias
+    
+    path('ProveedoresXProducto/', ProveedoresXProducto_ListCreateView.as_view(), name= 'productos_x_ventas_crear'),
+    path('productos_x_ventas/<int:pk>/', ProveedoresXProducto_DetailView.as_view(), name= 'ProveedoresXProducto_actualizar_eliminar'),
+    
     
     path('productos_x_ventas/', productos_x_ventas_ListCreateView.as_view(), name= 'productos_x_ventas_crear'),
     path('productos_x_ventas/<int:pk>/', productos_x_ventas_DetailView.as_view(), name= 'productos_x_ventas_actualizar_eliminar'),

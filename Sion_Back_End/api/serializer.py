@@ -1,8 +1,13 @@
 
-
-
 from .models        import *
 from rest_framework import serializers
+
+
+class proveedor_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = proveedor # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
 
 class productos_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -63,9 +68,43 @@ class metodo_de_pago_Serializer(serializers.ModelSerializer):
         model  = metodo_de_pago # Archivos exportados
         fields = '__all__' #All se refiere a todas las columnas del DB
 
+
+class montoenvio_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = montoenvio # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
+
+class Descuento_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = Descuento # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
+
+
+class carrito_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = carrito # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
+
+class carritoItem_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = carritoItem # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
+
 class ventas_Serializer(serializers.ModelSerializer):
     class Meta:
         model  = ventas # Archivos exportados
+        fields = '__all__' #All se refiere a todas las columnas del DB
+
+
+#TABLAS INTERMEDIAS
+
+class ProveedoresXProducto_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model  = ProveedoresXProducto # Archivos exportados
         fields = '__all__' #All se refiere a todas las columnas del DB
 
 

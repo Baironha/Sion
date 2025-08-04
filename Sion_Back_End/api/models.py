@@ -2,14 +2,30 @@ from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator,RegexValidator
 
 
+class proveedor(models.Model):
+    nombre_empresa = models.CharField(max_length=100, null=False)
+    contacto       = models.CharField(max_length=100, null=False)
+    telefono       = models.CharField(max_length=20, null=False)
+    correo         = models.EmailField(max_length=100, null=False)
+    direccion      = models.CharField(max_length=200, null=True, blank=True)
+    pais           = models.CharField(max_length=50, null=True, blank=True)
+    descripcion    = models.TextField(null=True, blank=True)  
+    activo         = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.nombre_empresa} - {self.contacto}"
+
 
 class productos(models.Model):
-    nombre              = models.CharField(max_length=100, null=False )
+    nombre              = models.CharField(max_length=100, null=False)
     codigo_producto     = models.CharField(max_length=100, blank=True)
-    precio              = models.DecimalField(max_digits=10, null=False)
-    marca               = models.CharField(max_length=100,null=False)
+    precio              = models.DecimalField(max_digits=10, decimal_places=2, null=False)
+    marca               = models.CharField(max_length=100, null=False)
     Descripcion_product = models.CharField(max_length=300, blank=True)
     peso                = models.DecimalField(max_digits=5, decimal_places=2, default=1.0)
+    proveedores         = models.ManyToManyField( 'Proveedor', through='ProveedoresXProducto', related_name='productos' )
+    def __str__(self):
+        return self.nombre
 
 
 class disponibilidad(models.Model):
@@ -27,10 +43,10 @@ class estado_producto (models.Model):
         ('Bueno', 'Bueno'),
         ('Dañado', 'Dañado'),
     ]
-    estado = models.CharField(max_length=10,choices=estado_producto,default='Bueno',)
+    estado      = models.CharField(max_length=10,choices=estado_producto,default='Bueno',)
     def __str__(self):
         return self.estado
-    descripcion =models.CharField(max_length=300, null=False)
+    descripcion = models.CharField(max_length=300, null=False)
 
 
 class stock_productos(models.Model):
@@ -52,7 +68,7 @@ class admins(models.Model):
 
 
 class rol_empleados (models.Model):
-    nombre_rol      = models.CharField( max_length=50, null=False)
+    nombre_rol = models.CharField( max_length=50, null=False)
 
 
 class empleados(models.Model):
@@ -75,14 +91,14 @@ class metodo_de_pago(models.Model):
     tipo_de_pago = models.CharField(max_length=100, null=False)
 
 
-class MontoEnvio(models.Model):
+class montoenvio(models.Model):
     REGION_CHOICES = [
         ('Nacional', 'Nacional'),
         ('Latinoamérica', 'Latinoamérica'),
         ('Internacional', 'Internacional'),
     ]
 
-    region = models.CharField(max_length=20, choices=REGION_CHOICES, null=False)
+    region          = models.CharField(max_length=20, choices=REGION_CHOICES, null=False)
     costo_por_libra = models.DecimalField(max_digits=10, decimal_places=2, null=False)  # ₡ o $
 
     def __str__(self):
@@ -91,17 +107,17 @@ class MontoEnvio(models.Model):
 
 
 class Descuento(models.Model):
-    producto = models.ForeignKey(productos, on_delete=models.CASCADE)
+    producto   = models.ForeignKey(productos, on_delete=models.CASCADE)
     porcentaje = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
     def __str__(self):
         return f"{self.producto.nombre} - {self.porcentaje}%"
 
 
-class Carrito(models.Model):
-    usuario = models.ForeignKey(usuarios, on_delete=models.CASCADE, related_name='carrito')
+class carrito(models.Model):
+    usuario        = models.ForeignKey(usuarios, on_delete=models.CASCADE, related_name='carrito')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
-    monto_envio = models.ForeignKey(MontoEnvio, on_delete=models.SET_NULL, null=True, blank=True, related_name='carritos')
+    monto_envio    = models.ForeignKey(montoenvio, on_delete=models.SET_NULL, null=True, blank=True, related_name='carritos')
 
     def peso_total(self):
         return sum([item.get_peso_total() for item in self.items.all()])
@@ -127,9 +143,9 @@ class Carrito(models.Model):
         return f"Carrito de {self.usuario.nombre}"
 
 
-class CarritoItem(models.Model):
-    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE, related_name='items')
-    producto = models.ForeignKey(productos, on_delete=models.CASCADE)
+class carritoItem(models.Model):
+    carrito  = models.ForeignKey(carrito, on_delete=models.CASCADE, related_name='items')
+    producto = models.ForeignKey(productos, on_delete=models.CASCADE, related_name='productos')
     cantidad = models.PositiveIntegerField(default=1)
 
     def get_descuento(self):
@@ -155,18 +171,16 @@ class CarritoItem(models.Model):
 
 
 class ventas(models.Model):
-    usuario = models.ForeignKey(usuarios, on_delete=models.CASCADE, related_name='ventas_usuario')
-    productos = models.ManyToManyField(productos, through='productos_x_ventas', related_name='ventas_productos')
-
-    fecha_registro = models.DateField(null=False)
-    empleado = models.ForeignKey(empleados, on_delete=models.CASCADE, related_name='ventas_empleados')
-    metodo_de_pago = models.ForeignKey(metodo_de_pago, on_delete=models.CASCADE, related_name='ventas_metodo_pago')
-
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
+    usuario         = models.ForeignKey(usuarios, on_delete=models.CASCADE, related_name='ventas_usuario')
+    productos       = models.ManyToManyField(productos, through='productos_x_ventas', related_name='ventas_productos')
+    fecha_registro  = models.DateField(null=False)
+    empleado        = models.ForeignKey(empleados, on_delete=models.CASCADE, related_name='ventas_empleados')
+    metodo_de_pago  = models.ForeignKey(metodo_de_pago, on_delete=models.CASCADE, related_name='ventas_metodo_pago')
+    subtotal        = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
     descuento_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
-    impuestos = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
-    monto_envio = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # <- nuevo campo
-    monto_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
+    impuestos       = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
+    monto_envio     = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # <- nuevo campo
+    monto_total     = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0.00)
 
     def __str__(self):
         return f"Venta #{self.id} - {self.fecha_registro}"
@@ -175,6 +189,16 @@ class ventas(models.Model):
 
 
 #Tablas intermedias
+
+class ProveedoresXProducto(models.Model):
+    producto       = models.ForeignKey(productos, on_delete=models.CASCADE, related_name='proveedores_producto')
+    proveedor      = models.ForeignKey(proveedor, on_delete=models.CASCADE, related_name='productos_proveedor')
+    fecha_registro = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.proveedor.nombre_empresa} -> {self.producto.nombre}"
+
+
 
 class productos_x_ventas(models.Model):
     id_producto = models.ForeignKey(productos, on_delete = models.CASCADE, related_name='productos_x_ventas')
