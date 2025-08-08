@@ -1,0 +1,143 @@
+/* navbar base con destello */
+.navbar-usuario {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #0f0f0f, #1a1a1a);
+  overflow: hidden; /* para que el destello no sobresalga */
+}
+
+/* Capa del destello */
+.navbar-usuario::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -30%; /* inicia antes del navbar */
+  width: 30%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  transform: skewX(-20deg);
+  animation: destelloSuave 6s ease-in-out infinite;
+}
+
+/* Animación: ida y vuelta */
+@keyframes destelloSuave {
+  0% {
+    left: -30%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: -30%;
+  }
+}
+
+/* Logo */
+.logo-usuario {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  font-family: "Segoe UI", sans-serif;
+  z-index: 1;
+}
+
+.logo-usuario span {
+  color: #ff5e00;;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 1.8rem;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.links-usuario {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  z-index: 1;
+}
+
+.links-usuario li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.links-usuario li a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #ff5e00;;
+  bottom: -4px;
+  left: 0;
+  transition: width 0.3s ease-in-out;
+}
+
+.links-usuario li a:hover {
+  color: #ff5e00;;
+  transform: translateY(-2px);
+}
+
+.links-usuario li a:hover::after {
+  width: 100%;
+}
+
+/* ------------------ MOBILE ------------------ */
+@media (max-width: 768px) {
+  .menu-icon {
+    display: block;
+  }
+
+  .links-usuario {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: rgba(17, 17, 17, 0.95);
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+    border-bottom: 2px solid #ff5e00;
+    z-index: 1;
+  }
+
+  .links-usuario.activo {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+
+  .links-usuario li {
+    width: 100%;
+  }
+
+  .links-usuario li a {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
+}
